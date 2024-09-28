@@ -1,14 +1,29 @@
 "use client";
 
 import Button from "@/components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useFirebaseGoogleAuth } from "@/auth/google";
+import { useToken } from "@/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "@/firebase";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const { signInWithGoogle } = useFirebaseGoogleAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/home");
+      }
+      unsubscribe();
+    });
+  });
 
   const handleGoogleLogin = async () => {
     console.log("I was clicked!");
@@ -16,6 +31,8 @@ export default function Home() {
     await signInWithGoogle();
     setTimeout(() => setLoading(false), 2000);
   };
+
+  const { token } = useToken();
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] min-h-screen font-[family-name:var(--font-geist-sans)] p-0 m-0">
@@ -31,7 +48,8 @@ export default function Home() {
             </h6>
           </section>
           <br />
-          <div className="flex flex-col gap-4">
+          <span>Your token is {token ? <b>{token}</b> : <b>null</b>}</span>
+          <section className="flex flex-col gap-4">
             <form className="flex flex-col gap-4">
               <input
                 type="text"
@@ -51,7 +69,7 @@ export default function Home() {
                 Log in with Google
               </Button>
             </div>
-          </div>
+          </section>
         </div>
       </main>
     </div>
