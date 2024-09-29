@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useFirebaseGoogleAuth } from "@/auth/google";
@@ -9,9 +9,11 @@ import { useToken } from "@/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase";
 import { useRouter } from "next/navigation";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { BarLoader } from "react-spinners";
 
-export default function Home() {
-  const [loading, setLoading] = useState(false);
+export default function Login() {
+  const [googleLoading, setGoogleLoading] = useState(false);
   const { signInWithGoogle } = useFirebaseGoogleAuth();
   const router = useRouter();
 
@@ -27,14 +29,22 @@ export default function Home() {
 
   const handleGoogleLogin = async () => {
     console.log("I was clicked!");
-    setLoading(true);
+    setGoogleLoading(true);
     await signInWithGoogle();
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => setGoogleLoading(false), 2000);
   };
 
-  const { token } = useToken();
+  const { token, loading } = useToken();
 
-  return (
+  const nodeRef = useRef(null);
+
+  const loadingPage = (
+    <div className="min-h-screen  w-full flex flex-col items-center justify-center">
+      <h1 className="text-4xl font-black font-mono">REVIEW_APP</h1>
+    </div>
+  );
+
+  const loginPage = token ? null : (
     <div className="grid grid-rows-[20px_1fr_20px] min-h-screen font-[family-name:var(--font-geist-sans)] p-0 m-0">
       <main className="min-h-full min-w-full row-span-2 flex justify-center items-center ">
         <div className="ring-1 dark:ring-slate-900 ring-slate-200 rounded-xl min-h-96 min-w-72 p-8 shadow-xl">
@@ -64,7 +74,10 @@ export default function Home() {
             </form>
             <div className="flex flex-nowrap justify-between">
               <Button>Log in</Button>
-              <Button onClick={() => handleGoogleLogin()} loading={loading}>
+              <Button
+                onClick={() => handleGoogleLogin()}
+                loading={googleLoading}
+              >
                 <FontAwesomeIcon icon={faGoogle} className="mr-4" />
                 Log in with Google
               </Button>
@@ -73,5 +86,18 @@ export default function Home() {
         </div>
       </main>
     </div>
+  );
+
+  return (
+    <SwitchTransition>
+      <CSSTransition
+        key={loading ? "loading" : "not loading"}
+        timeout={500}
+        nodeRef={nodeRef}
+        classNames="fade"
+      >
+        <div ref={nodeRef}>{loading ? loadingPage : loginPage}</div>
+      </CSSTransition>
+    </SwitchTransition>
   );
 }
