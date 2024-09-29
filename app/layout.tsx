@@ -31,12 +31,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`dark:bg-slate-950 text-black dark:text-white ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`dark:bg-slate-950 bg-white text-black dark:text-white ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <ThemeToggle className="absolute top-4 left-4" />
+          <ThemeToggle />
           {children}
         </Providers>
       </body>
