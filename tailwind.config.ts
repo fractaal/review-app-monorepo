@@ -14,6 +14,7 @@ const config: Config = {
         foreground: "var(--foreground)",
       },
       fontFamily: {
+        sans: '"Geist Mono", sans-serif',
         mono: '"Geist Mono", monospace',
       },
     },
