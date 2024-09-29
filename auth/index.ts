@@ -5,15 +5,15 @@ import { app } from "@/firebase";
 interface AuthStoreState {
   token: string | null;
   loading: boolean;
-  setToken: (string: string) => void;
+  setToken: (string: string | null) => void;
   setLoading: (b: boolean) => void;
 }
 
 export const useAuthStore = create<AuthStoreState>((set) => ({
   token: null,
   loading: true,
-  setToken: (newToken: string) => set(() => ({ token: newToken })),
-  setLoading: (newLoading: boolean) => set(() => ({ loading: newLoading })),
+  setToken: (newToken) => set(() => ({ token: newToken })),
+  setLoading: (newLoading) => set(() => ({ loading: newLoading })),
 }));
 
 export const useToken = () => {
@@ -34,6 +34,7 @@ auth.onAuthStateChanged(async (user) => {
 
     fetch("/me", { headers: { Authorization: token } });
   } else {
+    useAuthStore.getState().setToken(null);
     useAuthStore.getState().setLoading(false);
   }
 });
