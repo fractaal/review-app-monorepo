@@ -1,15 +1,23 @@
-'use client';
+"use client";
 
-import { useTheme } from 'next-themes';
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import Button from "./Button";
 
-export default function ThemeToggle( { className }: Readonly<{ className: string }>) {
-  const  { setTheme, theme } = useTheme();
+export default function ThemeToggle() {
+  const { setTheme, theme } = useTheme();
 
-  console.log("The theme is now " + theme);
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <button className={className} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-      Change Theme
-    </button>
-  )
+  useEffect(() => {
+    setMounted(true);
+  });
+
+  return mounted ? (
+    <div className="top-4 left-4 absolute">
+      <Button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+        Change Theme
+      </Button>
+    </div>
+  ) : null;
 }
