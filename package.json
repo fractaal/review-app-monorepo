@@ -22,6 +22,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-fontawesome": "^1.7.1",
+    "react-loading-skeleton": "^3.5.0",
     "react-spinners": "^0.14.1",
     "react-transition-group": "^4.4.5",
     "zustand": "^5.0.0-rc.2"
