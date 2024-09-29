@@ -8,12 +8,20 @@ if (process.env.FIREBASE_SERVER_CREDENTIALS) {
 
   console.log(rawJson);
 
-  try {
-    app = admin.initializeApp({
-      credential: admin.credential.cert(JSON.parse(rawJson)),
-    });
-  } catch (err) {
-    console.error("Firebase server credentials invalid - ", err);
+  if (admin.apps.length > 0) {
+    app = admin.apps[0] as admin.app.App;
+    console.log("Firebase app already exists");
+  } else {
+    try {
+      app = admin.initializeApp(
+        {
+          credential: admin.credential.cert(JSON.parse(rawJson)),
+        },
+        "server"
+      );
+    } catch (err) {
+      console.error("Firebase server credentials invalid - ", err);
+    }
   }
 } else {
   console.error("Firebase server credentials don't exist!");
