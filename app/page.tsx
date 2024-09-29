@@ -10,7 +10,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
-import { BarLoader } from "react-spinners";
 
 export default function Login() {
   const [googleLoading, setGoogleLoading] = useState(false);
