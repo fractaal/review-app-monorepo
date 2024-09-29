@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`dark:bg-slate-950 bg-white text-black dark:text-white ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`dark:bg-slate-950 bg-white font-sans text-black dark:text-white ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
           <ThemeToggle />
