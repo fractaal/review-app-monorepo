@@ -27,12 +27,26 @@ const auth = getAuth(app);
 
 auth.onAuthStateChanged(async (user) => {
   if (user) {
-    console.log("User is logged in!");
+    console.log("Firebase provided token, verifying with server...");
     const token = await user.getIdToken();
-    useAuthStore.getState().setToken(token);
-    useAuthStore.getState().setLoading(false);
 
-    fetch("/me", { headers: { Authorization: token } });
+    const verificationResult = await fetch("/me", {
+      headers: { Authorization: token },
+    });
+
+    console.log(verificationResult);
+
+    const state = useAuthStore.getState();
+
+    if (verificationResult.ok) {
+      console.log("Verification ok!");
+      state.setToken(token);
+      state.setLoading(false);
+    } else {
+      console.log("Verification failed, wiping token");
+      state.setToken(null);
+      state.setLoading(false);
+    }
   } else {
     useAuthStore.getState().setToken(null);
     useAuthStore.getState().setLoading(false);
