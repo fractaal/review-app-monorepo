@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import Button from "./Button";
+import Button from "./ui/button";
 
 export default function ThemeToggle() {
   const { setTheme, theme } = useTheme();
