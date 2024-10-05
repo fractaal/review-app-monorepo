@@ -41,11 +41,11 @@ export default function ReviewPost({
           </h2>
 
           <div className="flex flex-col items-end">
-            <h2>
+            <h2 className="text-right">
               <FontAwesomeIcon icon={faMoneyBill} /> <b>₱400-500</b>
             </h2>
 
-            <h2>
+            <h2 className="text-right">
               <FontAwesomeIcon icon={faLocationDot} />{" "}
               <b>Pabayo-Hayes Intersection</b>
             </h2>
