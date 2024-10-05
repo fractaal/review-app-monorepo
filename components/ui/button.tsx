@@ -1,6 +1,6 @@
 "use client";
 
-import "./animations.css";
+import "@/components/animations.css";
 import { CSSTransition } from "react-transition-group";
 import { BarLoader } from "react-spinners";
 import { useTheme } from "next-themes";
