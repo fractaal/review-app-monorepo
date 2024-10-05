@@ -15,8 +15,7 @@ export const useProtectedRoute = async () => {
   const auth = admin.auth(app);
 
   try {
-    const decodedToken = await auth.verifyIdToken(token);
-    console.log(decodedToken);
+    await auth.verifyIdToken(token);
   } catch (e) {
     console.log("Error decoding id token - redirecting to login (", e, ")");
     return redirect("/");
