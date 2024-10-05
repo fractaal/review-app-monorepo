@@ -19,11 +19,15 @@ export async function GET(request: Request) {
     return new Response(null, {
       status: 200,
       headers: {
-        "Set-Cookie": `auth-token=${authToken}`,
+        "Set-Cookie": `auth-token=${authToken}; SameSite=Strict; Secure; HttpOnly`,
       },
     });
   } catch (err) {
     void err;
-    return new Response(null, { status: 403 });
+
+    console.log("Token verification failed, clearing cookie");
+    return new Response(null, { status: 403, headers: {
+      "Set-Cookie": `auth-token=; Max-Age=0; SameSite=Strict; Secure; HttpOnly`,
+    } });
   }
 }
