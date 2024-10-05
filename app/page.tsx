@@ -1,13 +1,11 @@
 "use client";
 
-import Button from "@/components/Button";
+import Button from "@/components/ui/button";
 import { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useFirebaseGoogleAuth } from "@/auth/google";
 import { useToken } from "@/auth";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { app } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 
@@ -15,16 +13,6 @@ export default function Login() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const { signInWithGoogle } = useFirebaseGoogleAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    const auth = getAuth(app);
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.push("/home");
-      }
-      unsubscribe();
-    });
-  });
 
   const handleGoogleLogin = async () => {
     console.log("I was clicked!");
@@ -34,6 +22,16 @@ export default function Login() {
   };
 
   const { token, loading } = useToken();
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    if (token) {
+      router.push("/home");
+    }
+  }, [loading, token, router]);
 
   const nodeRef = useRef(null);
 
