@@ -11,7 +11,7 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true);
-  });
+  }, []);
 
   return mounted ? (
     <div className="top-4 left-4 absolute">
